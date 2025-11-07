@@ -1,10 +1,8 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-
-const openai = new OpenAIApi(configuration);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,13 +11,13 @@ export default async function handler(req, res) {
 
   try {
     const { messages } = req.body;
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages,
       temperature: 0.02,
     });
 
-    const reply = completion.data.choices[0].message;
+    const reply = completion.choices[0].message;
     res.status(200).json({ reply });
   } catch (error) {
     console.error('API error:', error);

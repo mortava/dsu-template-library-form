@@ -15,15 +15,28 @@ export default function RootyApp() {
     setInput('');
     setLoading(true);
 
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: newMessages })
-    });
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: newMessages })
+      });
 
-    const data = await response.json();
-    setMessages([...newMessages, data.reply]);
-    setLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setMessages([...newMessages, data.reply]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setMessages([...newMessages, {
+        role: 'assistant',
+        content: 'Sorry, there was an error processing your request. Please check the console for details.'
+      }]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
