@@ -2,10 +2,9 @@ import { useState } from 'react';
 
 export default function KoreroApp() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [showChat, setShowChat] = useState(false);
 
   function startNewChat() {
-    setShowChat(true);
+    window.open('https://chatgpt.com/g/g-rooty-alpha', '_blank');
   }
 
   return (
@@ -15,7 +14,7 @@ export default function KoreroApp() {
         <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
           <div className="p-4">
             <button
-              onClick={() => setShowChat(true)}
+              onClick={startNewChat}
               className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg border border-gray-300"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,31 +46,18 @@ export default function KoreroApp() {
           </button>
         </div>
 
-        {/* Content Area */}
-        {!showChat ? (
-          /* Landing Page */
-          <div className="flex-1 flex items-center justify-center">
-            <div className="text-center">
-              <h1 className="text-8xl font-light tracking-wider mb-16">KŌRERO</h1>
-              <button
-                onClick={startNewChat}
-                className="px-8 py-4 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-lg"
-              >
-                Start Chat
-              </button>
-            </div>
+        {/* Landing Page */}
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-8xl font-light tracking-wider mb-16">KŌRERO</h1>
+            <button
+              onClick={startNewChat}
+              className="px-8 py-4 bg-black text-white rounded-full hover:bg-gray-800 transition-colors text-lg"
+            >
+              Start Chat
+            </button>
           </div>
-        ) : (
-          /* Chat Iframe */
-          <div className="flex-1 relative">
-            <iframe
-              src="https://chat.openai.com/g/g-rooty-alpha"
-              className="w-full h-full border-0"
-              title="Rooty Alpha GPT"
-              sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-            />
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
